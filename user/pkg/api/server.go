@@ -21,6 +21,8 @@ func NewServerHTTP(userHanlder *userhandler.UserHandler , contributorHandler *co
 		userAuthRoute.POST("/signup", userHanlder.UserSignUp)
 		userAuthRoute.POST("/verify-otp", userHanlder.VerifyOtp)
 		userAuthRoute.POST("/login", userHanlder.UserLogin)
+
+		userAuthRoute.POST("/profile", userHanlder.UserProfile)
 	}
 
 	contributorAuthRoute := router.Group("/contributor")

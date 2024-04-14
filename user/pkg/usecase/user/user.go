@@ -102,14 +102,6 @@ func (us *userUseCase) Login(body models.LoginRequest) (string, error) {
 		return "", errors.New("user blocked by Admin")
 	}
 
-	//   is_blocked,err := us.userRepo.CheckUserBlockOrNot(user.Email)
-	//   if err != nil{
-	// 	return err
-	//  }
-	//  if is_blocked {
-	// 	return errors.New("User blocked by Admin")
-	//  }
-
 	if err := helper.ComapareHashPassword(user.Password, body.Password); !err {
 		return "", errors.New("wrong Email or password")
 	}

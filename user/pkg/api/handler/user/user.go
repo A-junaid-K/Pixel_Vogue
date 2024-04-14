@@ -52,7 +52,6 @@ func (uh *UserHandler) UserSignUp(c *gin.Context) {
 	// resp := response.SuccessResnpose{StatusCode: 303, Response: "Redirect to otp verification"}
 	// Redirect to OTP verification
 	c.Redirect(303, "/verify-otp")
-
 }
 
 func (uh *UserHandler) VerifyOtp(c *gin.Context) {
@@ -93,6 +92,17 @@ func (uh *UserHandler) UserLogin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, res)
 		return
 	}
+	validator := validator.New()
+
+	if err :=validator.Struct(&loginBody); err != nil {
+		resp := response.ErrResponse{
+			StatusCode: http.StatusBadRequest,
+			Response:   "Invalid Input",
+			Error:      err.Error(),
+		}
+		c.JSON(400, resp)
+		return
+	}
 
 	token, err := uh.userUsecase.Login(loginBody)
 
@@ -108,4 +118,9 @@ func (uh *UserHandler) UserLogin(c *gin.Context) {
 
 	resp := models.LoginResopnse{StatusCode: http.StatusCreated, Token: token}
 	c.JSON(201, resp)
+}
+
+
+func (uh *UserHandler)UserProfile(c *gin.Context){
+	
 }

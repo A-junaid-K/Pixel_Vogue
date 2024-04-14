@@ -33,7 +33,6 @@ func InitConfig() Config {
 		log.Fatal("Error setting current working directory:", err)
 	}
 
-	viper.AddConfigPath("../user")
 	viper.SetConfigFile(".env")
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err.Error())

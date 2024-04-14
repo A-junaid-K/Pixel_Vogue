@@ -21,11 +21,11 @@ func CreateAccessToken(user *models.User, role string) (accessToken string, err 
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token_string, err := token.SignedString([]byte(cfg.AccessTokenSecret))
-	if err != nil {
-		return "", err
-	}
-	return token_string, nil
+	// token_string, err := 
+	// if err != nil {
+	// 	return "", err
+	// }
+	return token.SignedString([]byte(cfg.AccessTokenSecret))
 }
 
 func CreateRefreshToken(user *models.User) (refreshTokens string, err error) {
@@ -44,6 +44,22 @@ func CreateRefreshToken(user *models.User) (refreshTokens string, err error) {
 		return "", err
 	}
 	return refresh_token, err
+}
+
+func GetUserIdFromJWT(token string)(string ,error){
+	cfg := config.GetConfig()
+
+	parsedToken, err := jwt.Parse(token, func(token *jwt.Token)(interface{},error){
+		return []byte(cfg.AccessTokenSecret), nil
+	})
+	if err != nil{
+		return "",err
+	}
+
+	claims := parsedToken.Claims.(jwt.MapClaims)
+	userId := claims["id"].(string)
+	
+	return userId,nil
 }
 
 
