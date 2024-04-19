@@ -25,7 +25,7 @@ func SendOtp(otp, email string) error {
 	message := "Subject: Otp verification\nyour verification otp is " + otp
 	return smtp.SendMail("smtp.gmail.com:587", auth, cfg.Email, to, []byte(message))
 }
-
+	
 type OtpVerifiaction struct {
 	Email string `json:"email"`
 	Otp   int    `json:"otp"`

@@ -13,7 +13,8 @@ type User struct {
 	Otp        int
 }
 
-type UserProfile struct{
-	Bio string `json:"bio"`
-
+type UpdateUserProfile struct{
+	Email string `json:"email,omitempty" validte:"email"`
+	Password string `json:"password,omitempty" validate:"min=6"`
 }
+

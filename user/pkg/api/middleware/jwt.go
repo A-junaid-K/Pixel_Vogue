@@ -29,6 +29,30 @@ func UserAuth(c *gin.Context) {
 		return
 	}
 
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		resp := response.ErrResponse{StatusCode: 401, Response: "Invalid Authorization token"}
+		c.JSON(http.StatusUnauthorized, resp)
+		c.Abort()
+		return
+	}
+
+	if role := claims["role"].(string); role != "user" {
+		resp := response.ErrResponse{StatusCode: 403, Response: "UnAuthorized Access"}
+		c.JSON(http.StatusForbidden, resp)
+		c.Abort()
+		return
+	}
+
+	id := claims["id"].(int)
+	if id == 0 {
+		resp := response.ErrResponse{StatusCode: 403, Response: "Something wrong in token"}
+		c.JSON(http.StatusForbidden, resp)
+		c.Abort()
+		return
+	}
+
+	c.Set("id", id)
 	c.Next()
 }
 

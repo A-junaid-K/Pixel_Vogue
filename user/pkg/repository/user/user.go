@@ -31,7 +31,7 @@ func (ur *UserRepository) Signup(user models.SignUpRequest) (models.User, error)
 		log.Println("sign up error: ", err)
 		return emptyuser, err
 	}
-	log.Println("signed User: ", signedUpUser)
+
 	return signedUpUser, nil
 }
 
@@ -59,18 +59,24 @@ func (ur *UserRepository) DeleteUser(Id int) error {
 
 // GetByEmail implements interfaces.UserRepository.
 func (ur *UserRepository) GetUserByEmail(email string) (models.User, error) {
-	log.Println("getuser : ", email)
 	var user models.User
 	if err := ur.DB.Table("users").Where("email=?", email).First(&user).Error; err != nil {
 		return user, err
 	}
-	log.Println("fetched user :", user)
+	return user, nil
+}
+
+func (ur *UserRepository) GetUserById(id int)(models.User,error){
+	var user models.User
+	if err := ur.DB.Table("users").Where("id=?",id).Scan(&user).Error; err != nil{
+		return user,err
+	}
 	return user, nil
 }
 
 ///////////////////////////----	CHECKS-----/////////////////////////////
 
-func (ur *UserRepository) ChackEmailExist(email string) (bool, error) {
+func (ur *UserRepository) CheckEmailExist(email string) (bool, error) {
 	log.Println("before :",email)
 	var count int64
 	if err := ur.DB.Table("users").Where("email=?", email).Count(&count).Error; err != nil {

@@ -6,9 +6,10 @@ import (
 
 type UserUsecase interface {
 	Signup(user models.SignUpRequest) error
+	VerifyOtp(email string, otp int) error
 	Login(user models.LoginRequest) (string, error)
 
-	VerifyOtp(email string, otp int) error
+	GetUserById(id int)(models.User,error)
 
 	// Create(c context.Context, user *models.User) error
 	// GetUserByEmail(c context.Context, email string) (models.User, error)

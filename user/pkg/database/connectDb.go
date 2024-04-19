@@ -27,9 +27,5 @@ func ConnectdB(c config.Config) (*gorm.DB, error) {
 		&models.User{},
 		&models.Contributor{},
 	)
-
-	// DB.AutoMigrate(models.User{})
-	// DB.AutoMigrate(models.Contributor{})
-
 	return DB, nil
 }

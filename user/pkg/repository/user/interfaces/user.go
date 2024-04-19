@@ -9,9 +9,10 @@ type UserRepository interface {
 	// Login(user models.LoginRequest) error
 	StoreOtpAndId(otp,id int)error
 
-	ChackEmailExist(email string) (bool, error)
+	CheckEmailExist(email string) (bool, error)
 	CheckUserBlockOrNot(email string) (bool, error)
 
+	GetUserById(id int)(models.User,error)
 	GetUserByEmail(email string) (models.User, error)
 	ValidateUser(id int)error
 

@@ -26,7 +26,7 @@ func NewUserUseCase(userRepo repository.UserRepository) interfaces.UserUsecase {
 func (us *userUseCase) Signup(user models.SignUpRequest) error {
 
 	//Checking email exist or not
-	exist, dberr := us.userRepo.ChackEmailExist(user.Email)
+	exist, dberr := us.userRepo.CheckEmailExist(user.Email)
 	if dberr != nil {
 		log.Println("db err :",dberr)
 		return dberr
@@ -51,7 +51,7 @@ func (us *userUseCase) Signup(user models.SignUpRequest) error {
 		return err
 	}
 
-	log.Println(signedUser)
+	// Stoeing OTP in User DB
 	if err := us.userRepo.StoreOtpAndId(otp, signedUser.Id); err != nil {
 		return errors.New("failed to store otp")
 	}
@@ -112,6 +112,15 @@ func (us *userUseCase) Login(body models.LoginRequest) (string, error) {
 	}
 
 	return token, nil
+}
+
+func (us *userUseCase)GetUserById(id int)(models.User,error){
+	user,err := us.userRepo.GetUserById(id)
+	if err != nil{
+		var empty models.User
+		return empty,errors.New("failed to get user from db: "+err.Error())
+	}
+	return user,nil
 }
 
 // func (su *userUseCase) CreateAccessToken(user *models.User, secret string, expiry int, role string) (accessToken string, err error) {

@@ -3,9 +3,10 @@ package api
 import (
 	"fmt"
 	"net/http"
-	userhandler "user/pkg/api/handler/user"
 	contributorhandler "user/pkg/api/handler/contributor"
+	userhandler "user/pkg/api/handler/user"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,16 +14,23 @@ type ServerHTTP struct {
 	engine *gin.Engine
 }
 
-func NewServerHTTP(userHanlder *userhandler.UserHandler , contributorHandler *contributorhandler.ContributorHandler) *ServerHTTP {
+func NewServerHTTP(userHandler *userhandler.UserHandler, contributorHandler *contributorhandler.ContributorHandler) *ServerHTTP {
 	router := gin.New()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"}
+
+	router.Use(cors.Default())
 
 	userAuthRoute := router.Group("/user")
 	{
-		userAuthRoute.POST("/signup", userHanlder.UserSignUp)
-		userAuthRoute.POST("/verify-otp", userHanlder.VerifyOtp)
-		userAuthRoute.POST("/login", userHanlder.UserLogin)
+		userAuthRoute.POST("/signup", userHandler.UserSignUp)
+		userAuthRoute.POST("/verify-otp", userHandler.VerifyOtp)
+		userAuthRoute.POST("/login", userHandler.UserLogin)
 
-		userAuthRoute.POST("/profile", userHanlder.UserProfile)
+		userAuthRoute.POST("/profile", userHandler.UserProfile)
 	}
 
 	contributorAuthRoute := router.Group("/contributor")
