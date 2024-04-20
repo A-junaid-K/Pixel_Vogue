@@ -12,6 +12,7 @@ type Contributor struct {
 	Validate   bool   `json:"validate" gorm:"NOT NULL; default:false"`
 	Created_at time.Time
 	Otp        int
+
 }
 
 type ContributorProfile struct{

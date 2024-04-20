@@ -21,7 +21,7 @@ func NewServerHTTP(userHandler *userhandler.UserHandler, contributorHandler *con
 	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"}
-
+	
 	router.Use(cors.Default())
 
 	userAuthRoute := router.Group("/user")

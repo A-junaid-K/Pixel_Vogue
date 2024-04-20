@@ -95,18 +95,3 @@ func (ur *UserRepository) CheckUserBlockOrNot(email string) (bool, error) {
 	}
 	return is_blocked, nil
 }
-
-// func (ur *UserRepository)Save(c context.Context, user models.User) (models.User, error) {
-// 	err := ur.DB.Save(&user).Error
-
-// 	return user, err
-// }
-
-// func (ur *UserRepository)GetById(c context.Context, Id int) (models.User, error) {
-// 	var user models.User
-
-// 	if err := database.DB.Find(&user, Id).Error; err != nil {
-// 		return models.User{}, err
-// 	}
-// 	return user, nil
-// }

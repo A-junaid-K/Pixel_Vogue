@@ -133,25 +133,3 @@ func (uh *UserHandler) UserProfile(c *gin.Context) {
 	}
 	c.JSON(200, userProfile)
 }
-
-// func (uh *UserHandler) UpdateEmail(c *gin.Context) {
-// 	userid := c.GetInt("id")
-// 	var body models.UpdateUserProfile
-// 	if err := c.Bind(&body); err != nil {
-// 		res := response.ErrResponse{Response: "Binding Error", Error: err.Error(), StatusCode: 400}
-// 		c.JSON(http.StatusBadRequest, res)
-// 		return
-// 	}
-// 	validator := validator.New()
-// 	if err := validator.Struct(body); err != nil {
-// 		res := response.ErrResponse{Response: "Invalid input", Error: err.Error(), StatusCode: 400}
-// 		c.JSON(http.StatusBadRequest, res)
-// 		return
-// 	}
-// 	if err := uh.userUsecase.UpdateEmail(body.Email);err != nil{
-// 		res := response.ErrResponse{Response: "Failed to Update Email", Error: err.Error(), StatusCode: 400}
-// 		c.JSON(http.StatusBadRequest, res)
-// 		return
-// 	}
-
-// }
