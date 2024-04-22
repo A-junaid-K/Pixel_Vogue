@@ -39,8 +39,9 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(cfg.AwsBucket),
 		Key:    aws.String("images/" + "1" + "." + ext),
-		ACL:    aws.String("public-read"),
-		Body:   image,
+		// Key:  &head.Filename,
+		ACL:  aws.String("public-read"),
+		Body: image,
 	})
 
 	if err != nil {
