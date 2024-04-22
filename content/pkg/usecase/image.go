@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"content/pkg/config"
-	"content/pkg/domain/models"
 	repointerface "content/pkg/repository/interfaces"
 	interfaces "content/pkg/usecase/interfaces"
 	"errors"
@@ -26,7 +25,9 @@ func NewImageUsecase(imagerepo repointerface.ImageRepository) interfaces.ImageUs
 }
 
 func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHeader) error {
-	var samplephoto models.Image
+	// var samplephoto models.Image
+	//sfds sample photo id
+
 	cfg := config.GetConfig()
 	sess := session.Must(session.NewSession(&aws.Config{
 		Region:      aws.String(cfg.AwsRegion),
@@ -37,13 +38,13 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 	uploader := s3manager.NewUploader(sess)
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(cfg.AwsBucket),
-		Key:    aws.String("images/" + string(samplephoto.Id) + "." + ext),
+		Key:    aws.String("images/" + "1" + "." + ext),
 		ACL:    aws.String("public-read"),
 		Body:   image,
 	})
 
 	if err != nil {
-		return errors.New("failed to upload image in s3 bucket : "+err.Error())
+		return errors.New("failed to upload image in s3 bucket : " + err.Error())
 	}
 
 	if err := us.ImageRepo.UploadImage(result.Location); err != nil {
