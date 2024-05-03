@@ -4,7 +4,7 @@ import (
 	"content/pkg/api"
 	imagehandler "content/pkg/api/handler"
 	"content/pkg/config"
-	"content/pkg/db"
+	"content/pkg/infrastructure/db"
 	"content/pkg/repository"
 	"content/pkg/usecase"
 )

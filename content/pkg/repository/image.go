@@ -16,22 +16,26 @@ func NewImageRepository(db *gorm.DB) interfaces.ImageRepository {
 	return &ImageRepository{DB: db}
 }
 
-func (ir *ImageRepository) UploadImage(imageUrl string) error {
-	var contributor models.Image // fake contributor data
-	log.Println("before")
-	// if err := ir.DB.Table("images").Where("contributr_id=?", contributor.Id).Create(
-	// 	models.Image{
-	// 		Image: imageUrl,
-	// 	}).Error; err != nil {
-	// 	log.Println("db err : ", err)
-	// 	return err
-	// }
+func (ir *ImageRepository) UploadImage(imageUrl, contributorId string) error {
 
-	// if err := ir.DB.Table("images").Where("contributr_id=?", contributor.Id).Set("images", imageUrl).Error; err != nil {
-	// 	log.Println("db err : ", err)
-	// 	return err
-	// }
+	if err := ir.DB.Table("images").Where("contributr_id=?", contributorId).Create(
+		models.Image{
+			Image: imageUrl,
+		}).Error; err != nil {
+		return err
+	}
 
-	log.Println("db after")
+	if err := ir.DB.Table("image_details").Where("contributr_id=?", contributorId).Create(
+		models.Image{
+			Image: imageUrl,
+		}).Error; err != nil {
+		return err
+	}
+
+	if err := ir.DB.Table("images").Where("contributr_id=?", contributorId).Set("images", imageUrl).Error; err != nil {
+		log.Println("db err : ", err)
+		return err
+	}
+
 	return nil
 }

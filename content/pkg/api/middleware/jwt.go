@@ -1,29 +1,31 @@
 package middleware
 
 import (
+	"content/pkg/config"
+	"content/pkg/domain/response"
+	pb "content/pkg/grpc"
 	"net/http"
-	"user/pkg/config"
-	response "user/pkg/domain/response"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-func UserAuth(c *gin.Context) {
+func ContributorAuth(c *gin.Context, t *pb.UploadImageRequest) {
 	cfg := config.GetConfig()
-	tokenString := c.GetHeader("Authorization")
+	tokenstring := t.ContributorToken
 
-	if tokenString == "" {
+	if tokenstring == "" {
 		err := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Please provide your token", Error: "Empty Token"}
 		c.JSON(404, err)
+		c.Abort()
 		return
 	}
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(cfg.AccessTokenSecret), nil
+	token, err := jwt.Parse(tokenstring, func(t *jwt.Token) (interface{}, error) {
+		return cfg.ContributorSecreteAccessToken, nil
 	})
 
-	if err != nil || !token.Valid {
+	if err != nil {
 		resp := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Cannot parse autherizatoin token", Error: err.Error()}
 		c.JSON(401, resp)
 		c.Abort()
@@ -38,7 +40,7 @@ func UserAuth(c *gin.Context) {
 		return
 	}
 
-	if role := claims["role"].(string); role != "user" {
+	if role := claims["role"]; role != "contributor" {
 		resp := response.ErrResponse{StatusCode: 403, Response: "UnAuthorized Access"}
 		c.JSON(http.StatusForbidden, resp)
 		c.Abort()
@@ -53,14 +55,6 @@ func UserAuth(c *gin.Context) {
 		return
 	}
 
-	c.Set("id", id)
+	c.Set("id",id)
 	c.Next()
-}
-
-func ContributorAuth(c *gin.Context) {
-	tokenString := c.GetHeader("Authorization")
-	if tokenString == "" {
-		err := response.ErrResponse{StatusCode: 401, Response: "token string is empty", Error: ""}
-		c.JSON(401, err)
-	}
 }
