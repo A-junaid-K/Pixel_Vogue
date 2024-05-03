@@ -1,6 +1,7 @@
 package contributorHandler
 
 import (
+	"log"
 	"net/http"
 	models "user/pkg/domain/models"
 	response "user/pkg/domain/response"
@@ -8,6 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/proto"
 )
 
 type ContributorHandler struct {
@@ -107,4 +111,20 @@ func (uh *ContributorHandler) ContributorLogin(c *gin.Context) {
 
 	resp := models.LoginResopnse{StatusCode: http.StatusCreated, Token: token}
 	c.JSON(201, resp)
+}
+
+func (uh *ContributorHandler) CallUploadImage(c *gin.Context) {
+
+	const port = ":8000"
+
+	conn, err := grpc.Dial("localhost"+port, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatal("could not connect server: ", err)
+		return
+	}
+
+	defer conn.Close()
+
+	client := proto.pb.NewUploadImage
+
 }

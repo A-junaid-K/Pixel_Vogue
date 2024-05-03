@@ -9,14 +9,14 @@ type Image struct {
 }
 
 type ImageDetails struct {
-	// Contributor      Contributor
-	Id               int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	ImageID          int    `json:"image_id"`
-	Size             string `json:"size,omitempty"`
-	Dimensions       string
-	Date_Taken       time.Time
-	More_Information string
-	Tagss            string
+	ContributorId   int    `json:"contributor_id"`
+	Id              int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	ImageID         int    `json:"image_id"`
+	Size            string `json:"size,omitempty"`
+	Dimensions      string
+	DateTaken       time.Time
+	MoreInformation string
+	Tags            string
 }
 
 type ImageResonse struct {

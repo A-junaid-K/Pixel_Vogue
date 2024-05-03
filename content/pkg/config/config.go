@@ -17,8 +17,12 @@ type Config struct {
 	DBHost     string `mapstructure:"DB_HOST"`
 	DBPort     string `mapstructure:"DB_PORT"`
 
-	AccessTokenSecret      string `mapstructure:"ACCESS_TOKEN_SECRET"`
-	RefreshTokenSecret     string `mapstructure:"REFRESH_TOKEN_SECRET"`
+	UserAccessTokenSecret      string `mapstructure:"USER_ACCESS_TOKEN_SECRET"`
+	UserRefreshTokenSecret     string `mapstructure:"USER_REFRESH_TOKEN_SECRET"`
+
+	ContributorSecreteAccessToken string `mapstructure:"CONTRIBUTOR_ACCESS_TOKEN_SECRET"`
+	ContributorSecreteRefreshToken string `mapstructure:"CONTRIBUTOR_REFRESH_TOKEN_SECRET"`
+
 	AccessTokenExpiryHour  int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
 	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
 

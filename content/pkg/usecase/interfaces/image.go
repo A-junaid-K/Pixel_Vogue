@@ -5,5 +5,5 @@ import (
 )
 
 type ImageUsecase interface {
-	UploadImage(image multipart.File, head multipart.FileHeader) error
+	UploadImage(image multipart.File, head multipart.FileHeader, contributorId string) error
 }

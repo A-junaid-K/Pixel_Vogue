@@ -4,6 +4,7 @@ import (
 	"content/pkg/domain/models"
 	"content/pkg/domain/response"
 	"content/pkg/usecase/interfaces"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -22,6 +23,7 @@ func NewImageHandler(imageUsecase interfaces.ImageUsecase) *ImageHandler {
 func (ih *ImageHandler) UploadImage(c *gin.Context) {
 
 	// Verify Contributor
+	contributorId := c.GetInt("id")
 
 	// Bind
 	var body models.Image
@@ -37,21 +39,22 @@ func (ih *ImageHandler) UploadImage(c *gin.Context) {
 		c.JSON(400, resp)
 		return
 	}
+
 	maxsize := int64(50 * 1024 * 1024) // max size 50mb
-	if err := c.Request.ParseMultipartForm(maxsize); err != nil{
+	if err := c.Request.ParseMultipartForm(maxsize); err != nil {
 		resp := response.ErrResponse{StatusCode: 400, Response: "Failed to multi parse", Error: err.Error()}
 		c.JSON(400, resp)
 		return
 	}
 
-	image,header,err := c.Request.FormFile("image")
+	image, header, err := c.Request.FormFile("image")
 	if err != nil {
 		resp := response.ErrResponse{StatusCode: 400, Response: "Failed to get form file request", Error: err.Error()}
 		c.JSON(400, resp)
 		return
 	}
 
-	if err := ih.imageUsecase.UploadImage(image,*header); err != nil {
+	if err := ih.imageUsecase.UploadImage(image, *header, strconv.Itoa(contributorId)); err != nil {
 		resp := response.ErrResponse{StatusCode: 400, Response: "Failed to upload image", Error: err.Error()}
 		c.JSON(400, resp)
 		return
@@ -60,3 +63,17 @@ func (ih *ImageHandler) UploadImage(c *gin.Context) {
 	resp := response.SuccessResnpose{StatusCode: 200, Response: "Image Successfully uploaded"}
 	c.JSON(200, resp)
 }
+
+// func (ih *ImageHandler) UploadImage(c *gin.Context, req *pb.UploadImageRequest) {
+// 	var body models.Image
+
+// 	body.Details.ContributorId = int(req.ContributorId)
+
+// 	// Bind
+// 	if err := c.Bind(&body); err != nil {
+// 		resp := response.ErrResponse{StatusCode: 500, Response: "Cannot Bind", Error: err.Error()}
+// 		c.JSON(500, resp)
+// 		return
+// 	}
+
+// }

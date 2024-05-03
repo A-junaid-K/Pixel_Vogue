@@ -1,5 +1,5 @@
 package interfaces
 
 type ImageRepository interface {
-	UploadImage(imageUrl string) error
+	UploadImage(imageUrl, contributorId string) error
 }
