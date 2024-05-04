@@ -10,7 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func ContributorAuth(c *gin.Context, t *pb.UploadImageRequest) {
+func ContributorAuth(c *gin.Context, t *pb.TokenRequest) {
 	cfg := config.GetConfig()
 	tokenstring := t.ContributorToken
 

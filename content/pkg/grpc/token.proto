@@ -4,10 +4,12 @@ package grpc;
 
 option go_package="/grpc";
 
-// service ImageService{
-//     rpc uploadImage(uploadImageRequest) returns (uploadImageResponse);
-// }
+service TokenService{
+    rpc VerifyToken(tokenRequest) returns(tokenResponse);
+}
 
-message token{
+message tokenRequest{
     string contributor_token=1;
 }
+
+message tokenResponse{}

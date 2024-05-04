@@ -4,7 +4,6 @@ import (
 	"content/pkg/domain/models"
 	"content/pkg/domain/response"
 	"content/pkg/usecase/interfaces"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -22,16 +21,16 @@ func NewImageHandler(imageUsecase interfaces.ImageUsecase) *ImageHandler {
 
 func (ih *ImageHandler) UploadImage(c *gin.Context) {
 
-	// Verify Contributor
-	contributorId := c.GetInt("id")
-
 	// Bind
-	var body models.Image
+	var body models.ImageDetails
 	if err := c.Bind(&body); err != nil {
 		resp := response.ErrResponse{StatusCode: 500, Response: "Cannot Bind", Error: err.Error()}
 		c.JSON(500, resp)
 		return
 	}
+
+	contributorId := c.GetInt("id")
+	body.ContributorId = contributorId
 
 	validate := validator.New()
 	if err := validate.Struct(body); err != nil {
@@ -54,7 +53,7 @@ func (ih *ImageHandler) UploadImage(c *gin.Context) {
 		return
 	}
 
-	if err := ih.imageUsecase.UploadImage(image, *header, strconv.Itoa(contributorId)); err != nil {
+	if err := ih.imageUsecase.UploadImage(image, *header, body); err != nil {
 		resp := response.ErrResponse{StatusCode: 400, Response: "Failed to upload image", Error: err.Error()}
 		c.JSON(400, resp)
 		return

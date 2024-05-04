@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ImageServiceClient is the client API for ImageService service.
+// TokenServiceClient is the client API for TokenService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ImageServiceClient interface {
-	UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error)
+type TokenServiceClient interface {
+	VerifyToken(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*TokenResponse, error)
 }
 
-type imageServiceClient struct {
+type tokenServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewImageServiceClient(cc grpc.ClientConnInterface) ImageServiceClient {
-	return &imageServiceClient{cc}
+func NewTokenServiceClient(cc grpc.ClientConnInterface) TokenServiceClient {
+	return &tokenServiceClient{cc}
 }
 
-func (c *imageServiceClient) UploadImage(ctx context.Context, in *UploadImageRequest, opts ...grpc.CallOption) (*UploadImageResponse, error) {
-	out := new(UploadImageResponse)
-	err := c.cc.Invoke(ctx, "/grpc.ImageService/uploadImage", in, out, opts...)
+func (c *tokenServiceClient) VerifyToken(ctx context.Context, in *TokenRequest, opts ...grpc.CallOption) (*TokenResponse, error) {
+	out := new(TokenResponse)
+	err := c.cc.Invoke(ctx, "/grpc.TokenService/VerifyToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ImageServiceServer is the server API for ImageService service.
-// All implementations must embed UnimplementedImageServiceServer
+// TokenServiceServer is the server API for TokenService service.
+// All implementations must embed UnimplementedTokenServiceServer
 // for forward compatibility
-type ImageServiceServer interface {
-	UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error)
-	mustEmbedUnimplementedImageServiceServer()
+type TokenServiceServer interface {
+	VerifyToken(context.Context, *TokenRequest) (*TokenResponse, error)
+	mustEmbedUnimplementedTokenServiceServer()
 }
 
-// UnimplementedImageServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedImageServiceServer struct {
+// UnimplementedTokenServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedTokenServiceServer struct {
 }
 
-func (UnimplementedImageServiceServer) UploadImage(context.Context, *UploadImageRequest) (*UploadImageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UploadImage not implemented")
+func (UnimplementedTokenServiceServer) VerifyToken(context.Context, *TokenRequest) (*TokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
 }
-func (UnimplementedImageServiceServer) mustEmbedUnimplementedImageServiceServer() {}
+func (UnimplementedTokenServiceServer) mustEmbedUnimplementedTokenServiceServer() {}
 
-// UnsafeImageServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ImageServiceServer will
+// UnsafeTokenServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TokenServiceServer will
 // result in compilation errors.
-type UnsafeImageServiceServer interface {
-	mustEmbedUnimplementedImageServiceServer()
+type UnsafeTokenServiceServer interface {
+	mustEmbedUnimplementedTokenServiceServer()
 }
 
-func RegisterImageServiceServer(s grpc.ServiceRegistrar, srv ImageServiceServer) {
-	s.RegisterService(&ImageService_ServiceDesc, srv)
+func RegisterTokenServiceServer(s grpc.ServiceRegistrar, srv TokenServiceServer) {
+	s.RegisterService(&TokenService_ServiceDesc, srv)
 }
 
-func _ImageService_UploadImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UploadImageRequest)
+func _TokenService_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ImageServiceServer).UploadImage(ctx, in)
+		return srv.(TokenServiceServer).VerifyToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.ImageService/uploadImage",
+		FullMethod: "/grpc.TokenService/VerifyToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ImageServiceServer).UploadImage(ctx, req.(*UploadImageRequest))
+		return srv.(TokenServiceServer).VerifyToken(ctx, req.(*TokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ImageService_ServiceDesc is the grpc.ServiceDesc for ImageService service.
+// TokenService_ServiceDesc is the grpc.ServiceDesc for TokenService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ImageService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.ImageService",
-	HandlerType: (*ImageServiceServer)(nil),
+var TokenService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "grpc.TokenService",
+	HandlerType: (*TokenServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "uploadImage",
-			Handler:    _ImageService_UploadImage_Handler,
+			MethodName: "VerifyToken",
+			Handler:    _TokenService_VerifyToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
