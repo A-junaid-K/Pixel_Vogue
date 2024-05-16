@@ -11,7 +11,6 @@ import (
 	"github.com/go-playground/validator"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/proto"
 )
 
 type ContributorHandler struct {
@@ -124,7 +123,5 @@ func (uh *ContributorHandler) CallUploadImage(c *gin.Context) {
 	}
 
 	defer conn.Close()
-
-	client := proto.pb.NewUploadImage
 
 }

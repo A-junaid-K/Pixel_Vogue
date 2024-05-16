@@ -17,14 +17,14 @@ type Config struct {
 	DBHost     string `mapstructure:"DB_HOST"`
 	DBPort     string `mapstructure:"DB_PORT"`
 
-	UserAccessTokenSecret      string `mapstructure:"USER_ACCESS_TOKEN_SECRET"`
-	UserRefreshTokenSecret     string `mapstructure:"USER_REFRESH_TOKEN_SECRET"`
+	UserAccessToken  string `mapstructure:"USER_ACCESS_TOKEN"`
+	UserRefreshToken string `mapstructure:"USER_REFRESH_TOKEN"`
 
-	ContributorSecreteAccessToken string `mapstructure:"CONTRIBUTOR_ACCESS_TOKEN_SECRET"`
-	ContributorSecreteRefreshToken string `mapstructure:"CONTRIBUTOR_REFRESH_TOKEN_SECRET"`
+	ContributorAccessToken  string `mapstructure:"CONTRIBUTOR_ACCESS_TOKEN"`
+	ContributorRefreshToken string `mapstructure:"CONTRIBUTOR_REFRESH_TOKEN"`
 
-	AccessTokenExpiryHour  int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
-	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
+	AccessTokenExpiryHour  int `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
+	RefreshTokenExpiryHour int `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
 
 	AwsBucket          string `mapstructure:"AWS_BUCKET"`
 	AwsRegion          string `mapstructure:"AWS_REGION"`
