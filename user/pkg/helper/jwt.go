@@ -21,11 +21,11 @@ func CreateAccessToken(user *models.User, role string) (accessToken string, err 
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	// token_string, err := 
+	// token_string, err :=
 	// if err != nil {
 	// 	return "", err
 	// }
-	return token.SignedString([]byte(cfg.AccessTokenSecret))
+	return token.SignedString([]byte(cfg.UserAccessToken))
 }
 
 func CreateRefreshToken(user *models.User) (refreshTokens string, err error) {
@@ -39,32 +39,30 @@ func CreateRefreshToken(user *models.User) (refreshTokens string, err error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaim)
-	refresh_token, err := token.SignedString(cfg.RefreshTokenSecret)
+	refresh_token, err := token.SignedString(cfg.UserRefreshToken)
 	if err != nil {
 		return "", err
 	}
 	return refresh_token, err
 }
 
-func GetUserIdFromJWT(token string)(string ,error){
-	cfg := config.GetConfig()
+// func GetUserIdFromJWT(token string)(string ,error){
+// 	cfg := config.GetConfig()
 
-	parsedToken, err := jwt.Parse(token, func(token *jwt.Token)(interface{},error){
-		return []byte(cfg.AccessTokenSecret), nil
-	})
-	if err != nil{
-		return "",err
-	}
+// 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token)(interface{},error){
+// 		return []byte(cfg.UserAccessTokenSecret), nil
+// 	})
+// 	if err != nil{
+// 		return "",err
+// 	}
 
-	claims := parsedToken.Claims.(jwt.MapClaims)
-	userId := claims["id"].(string)
-	
-	return userId,nil
-}
+// 	claims := parsedToken.Claims.(jwt.MapClaims)
+// 	userId := claims["id"].(string)
 
+// 	return userId,nil
+// }
 
 //______________________________CONTRIBUTOR____________________________//
-
 
 func CreateAccessTokenContributor(user *models.Contributor, role string) (accessToken string, err error) {
 	cfg := config.GetConfig()
@@ -79,7 +77,7 @@ func CreateAccessTokenContributor(user *models.Contributor, role string) (access
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token_string, err := token.SignedString([]byte(cfg.AccessTokenSecret))
+	token_string, err := token.SignedString([]byte(cfg.ContributorAccessToken))
 	if err != nil {
 		return "", err
 	}

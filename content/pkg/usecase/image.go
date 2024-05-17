@@ -2,10 +2,12 @@ package usecase
 
 import (
 	"content/pkg/config"
+	"content/pkg/domain/models"
 	repointerface "content/pkg/repository/interfaces"
 	interfaces "content/pkg/usecase/interfaces"
 	"errors"
 	"mime/multipart"
+	"strconv"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -24,7 +26,7 @@ func NewImageUsecase(imagerepo repointerface.ImageRepository) interfaces.ImageUs
 	}
 }
 
-func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHeader, contributorId string) error {
+func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHeader, imagedetails models.ImageDetails) error {
 
 	cfg := config.GetConfig()
 	sess := session.Must(session.NewSession(&aws.Config{
@@ -38,7 +40,7 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(cfg.AwsBucket),
-		Key:    aws.String("images/" + contributorId + "." + ext),
+		Key:    aws.String("images/" + strconv.Itoa(imagedetails.ContributorId) + "." + ext),
 		// Key:  &head.Filename,
 		ACL:  aws.String("public-read"),
 		Body: image,
@@ -48,7 +50,7 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 		return errors.New("failed to upload image in s3 bucket : " + err.Error())
 	}
 
-	if err := us.ImageRepo.UploadImage(result.Location, contributorId); err != nil {
+	if err := us.ImageRepo.UploadImage(result.Location, imagedetails); err != nil {
 		return err
 	}
 

@@ -16,26 +16,32 @@ func NewImageRepository(db *gorm.DB) interfaces.ImageRepository {
 	return &ImageRepository{DB: db}
 }
 
-func (ir *ImageRepository) UploadImage(imageUrl, contributorId string) error {
+func (ir *ImageRepository) UploadImage(imageUrl string, imagedetails models.ImageDetails) error {
 
-	if err := ir.DB.Table("images").Where("contributr_id=?", contributorId).Create(
-		models.Image{
-			Image: imageUrl,
-		}).Error; err != nil {
+	image := &models.Image{Image: imageUrl}
+	log.Println("iamge repository.")
+	if err := ir.DB.Create(image).Error; err != nil {
 		return err
 	}
 
-	if err := ir.DB.Table("image_details").Where("contributr_id=?", contributorId).Create(
-		models.Image{
-			Image: imageUrl,
-		}).Error; err != nil {
+	imageDetails := &models.ImageDetails{
+		ContributorId:   imagedetails.ContributorId,
+		ImageID:         image.Id,
+		Size:            imagedetails.Size,
+		Dimension:      imagedetails.Dimension,
+		DateTaken:       imagedetails.DateTaken,
+		MoreInformation: imagedetails.MoreInformation,
+		Tags:            imagedetails.Tags,
+	}
+
+	if err := ir.DB.Create(imageDetails).Error; err != nil {
 		return err
 	}
 
-	if err := ir.DB.Table("images").Where("contributr_id=?", contributorId).Set("images", imageUrl).Error; err != nil {
-		log.Println("db err : ", err)
-		return err
-	}
+	// if err := ir.DB.Table("images").Where("contributr_id=?", contributorId).Set("images", imageUrl).Error; err != nil {
+	// 	log.Println("db err : ", err)
+	// 	return err
+	// }
 
 	return nil
 }

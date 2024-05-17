@@ -5,6 +5,7 @@ import (
 	"net/http"
 	contributorhandler "user/pkg/api/handler/contributor"
 	userhandler "user/pkg/api/handler/user"
+	"user/pkg/api/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func NewServerHTTP(userHandler *userhandler.UserHandler, contributorHandler *con
 	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"}
-	
+
 	router.Use(cors.Default())
 
 	userAuthRoute := router.Group("/user")
@@ -30,7 +31,7 @@ func NewServerHTTP(userHandler *userhandler.UserHandler, contributorHandler *con
 		userAuthRoute.POST("/verify-otp", userHandler.VerifyOtp)
 		userAuthRoute.POST("/login", userHandler.UserLogin)
 
-		userAuthRoute.POST("/profile", userHandler.UserProfile)
+		userAuthRoute.GET("/profile", middleware.UserAuth, userHandler.UserProfile)
 	}
 
 	contributorAuthRoute := router.Group("/contributor")
@@ -38,6 +39,8 @@ func NewServerHTTP(userHandler *userhandler.UserHandler, contributorHandler *con
 		contributorAuthRoute.POST("/register", contributorHandler.ContributorRegister)
 		contributorAuthRoute.POST("/verify-otp", contributorHandler.VerifyOtp)
 		contributorAuthRoute.POST("/login", contributorHandler.ContributorLogin)
+		// contributorAuthRoute.GET("/profile", contributorHandler.ContributorProfile)
+
 	}
 
 	return &ServerHTTP{engine: router}

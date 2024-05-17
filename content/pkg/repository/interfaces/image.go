@@ -1,5 +1,7 @@
 package interfaces
 
+import "content/pkg/domain/models"
+
 type ImageRepository interface {
-	UploadImage(imageUrl, contributorId string) error
+	UploadImage(imageUrl string, body models.ImageDetails) error
 }

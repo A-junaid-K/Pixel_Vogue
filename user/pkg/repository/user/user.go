@@ -66,10 +66,10 @@ func (ur *UserRepository) GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func (ur *UserRepository) GetUserById(id int)(models.User,error){
+func (ur *UserRepository) GetUserById(id int) (models.User, error) {
 	var user models.User
-	if err := ur.DB.Table("users").Where("id=?",id).Scan(&user).Error; err != nil{
-		return user,err
+	if err := ur.DB.Table("users").Where("id=?", id).First(&user).Error; err != nil {
+		return user, err
 	}
 	return user, nil
 }
@@ -77,10 +77,10 @@ func (ur *UserRepository) GetUserById(id int)(models.User,error){
 ///////////////////////////----	CHECKS-----/////////////////////////////
 
 func (ur *UserRepository) CheckEmailExist(email string) (bool, error) {
-	log.Println("before :",email)
+	log.Println("before :", email)
 	var count int64
 	if err := ur.DB.Table("users").Where("email=?", email).Count(&count).Error; err != nil {
-		log.Println("db email err: ",err)
+		log.Println("db email err: ", err)
 		return true, err
 	}
 	return count > 0, nil

@@ -20,11 +20,11 @@ func UserAuth(c *gin.Context) {
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(cfg.AccessTokenSecret), nil
+		return []byte(cfg.UserAccessToken), nil
 	})
 
 	if err != nil || !token.Valid {
-		resp := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Cannot parse autherizatoin token", Error: err.Error()}
+		resp := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Cannot parse authorization token", Error: err.Error()}
 		c.JSON(401, resp)
 		c.Abort()
 		return
@@ -44,23 +44,23 @@ func UserAuth(c *gin.Context) {
 		c.Abort()
 		return
 	}
-
-	id := claims["id"].(int)
+	
+	id := claims["id"].(float64)
 	if id == 0 {
 		resp := response.ErrResponse{StatusCode: 403, Response: "Something wrong in token"}
 		c.JSON(http.StatusForbidden, resp)
 		c.Abort()
 		return
 	}
-
-	c.Set("id", id)
-	c.Next()
+	uid := int(id)
+	c.Set("id", uid)
+	// c.Next()
 }
 
-func ContributorAuth(c *gin.Context) {
-	tokenString := c.GetHeader("Authorization")
-	if tokenString == "" {
-		err := response.ErrResponse{StatusCode: 401, Response: "token string is empty", Error: ""}
-		c.JSON(401, err)
-	}
-}
+// func ContributorAuth(c *gin.Context) {
+// 	tokenString := c.GetHeader("Authorization")
+// 	if tokenString == "" {
+// 		err := response.ErrResponse{StatusCode: 401, Response: "token string is empty", Error: ""}
+// 		c.JSON(401, err)
+// 	}
+// }

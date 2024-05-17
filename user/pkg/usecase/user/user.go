@@ -115,6 +115,7 @@ func (us *userUseCase) Login(body models.LoginRequest) (string, error) {
 }
 
 func (us *userUseCase)GetUserById(id int)(models.User,error){
+
 	user,err := us.userRepo.GetUserById(id)
 	if err != nil{
 		var empty models.User

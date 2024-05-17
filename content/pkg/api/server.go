@@ -1,8 +1,9 @@
 package api
 
 import (
-	"fmt"
 	imagehandler "content/pkg/api/handler"
+	"content/pkg/api/middleware"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -27,7 +28,7 @@ func NewServerHTTP(imageHandler *imagehandler.ImageHandler) *ServerHTTP {
 
 	image := router.Group("/image")
 	{
-		image.POST("/upload", imageHandler.UploadImage)
+		image.POST("/upload", middleware.ContributorAuth, imageHandler.UploadImage)
 	}
 
 	return &ServerHTTP{engine: router}

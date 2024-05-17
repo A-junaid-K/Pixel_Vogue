@@ -1,9 +1,9 @@
 package db
 
 import (
-	"fmt"
 	"content/pkg/config"
 	"content/pkg/domain/models"
+	"fmt"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,6 +24,7 @@ func ConnectdB(c config.Config) (*gorm.DB, error) {
 
 	DB.AutoMigrate(
 		&models.Image{},
+		&models.ImageDetails{},
 	)
 	return DB, nil
 }

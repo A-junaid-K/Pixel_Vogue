@@ -18,10 +18,14 @@ type Config struct {
 	Email         string `mapstructure:"EMAIL"`
 	EmailPassword string `mapstructure:"EMAIL_PASSWORD"`
 
-	AccessTokenSecret      string `mapstructure:"ACCESS_TOKEN_SECRET"`
-	RefreshTokenSecret     string `mapstructure:"REFRESH_TOKEN_SECRET"`
-	AccessTokenExpiryHour  int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
-	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
+	UserAccessToken  string `mapstructure:"USER_ACCESS_TOKEN"`
+	UserRefreshToken string `mapstructure:"USER_REFRESH_TOKEN"`
+
+	ContributorAccessToken  string `mapstructure:"CONTRIBUTOR_ACCESS_TOKEN"`
+	ContributorRefreshToken string `mapstructure:"CONTRIBUTOR_REFRESH_TOKEN"`
+
+	AccessTokenExpiryHour  int `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
+	RefreshTokenExpiryHour int `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
 }
 
 var cfg Config
