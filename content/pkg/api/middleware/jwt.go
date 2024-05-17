@@ -21,7 +21,7 @@ func ContributorAuth(c *gin.Context) {
 	}
 
 	token, err := jwt.Parse(tokenstring, func(t *jwt.Token) (interface{}, error) {
-		return cfg.ContributorSecreteAccessToken, nil
+		return []byte(cfg.ContributorAccessToken), nil
 	})
 
 	if err != nil {

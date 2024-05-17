@@ -24,7 +24,7 @@ func UserAuth(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		resp := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Cannot parse autherizatoin token", Error: err.Error()}
+		resp := response.ErrResponse{StatusCode: http.StatusUnauthorized, Response: "Cannot parse authorization token", Error: err.Error()}
 		c.JSON(401, resp)
 		c.Abort()
 		return

@@ -3,6 +3,7 @@ package repository
 import (
 	"content/pkg/domain/models"
 	"content/pkg/repository/interfaces"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -17,17 +18,17 @@ func NewImageRepository(db *gorm.DB) interfaces.ImageRepository {
 
 func (ir *ImageRepository) UploadImage(imageUrl string, imagedetails models.ImageDetails) error {
 
-	image := models.Image{Image: imageUrl}
-
+	image := &models.Image{Image: imageUrl}
+	log.Println("iamge repository.")
 	if err := ir.DB.Create(image).Error; err != nil {
 		return err
 	}
 
-	imageDetails := models.ImageDetails{
+	imageDetails := &models.ImageDetails{
 		ContributorId:   imagedetails.ContributorId,
 		ImageID:         image.Id,
 		Size:            imagedetails.Size,
-		Dimensions:      imagedetails.Dimensions,
+		Dimension:      imagedetails.Dimension,
 		DateTaken:       imagedetails.DateTaken,
 		MoreInformation: imagedetails.MoreInformation,
 		Tags:            imagedetails.Tags,

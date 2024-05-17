@@ -12,7 +12,7 @@ type ImageDetails struct {
 	Id              int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	ContributorId   int    `json:"contributor_id"`
 	Size            string `json:"size,omitempty"`
-	Dimensions      string
+	Dimension      string
 	DateTaken       time.Time
 	MoreInformation string
 	Tags            string
