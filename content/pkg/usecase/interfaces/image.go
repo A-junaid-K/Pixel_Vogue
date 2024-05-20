@@ -7,4 +7,5 @@ import (
 
 type ImageUsecase interface {
 	UploadImage(image multipart.File, head multipart.FileHeader, body models.ImageDetails) error
+	GetImage(id int) (models.Image, error)
 }

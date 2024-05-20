@@ -29,6 +29,7 @@ func NewServerHTTP(imageHandler *imagehandler.ImageHandler) *ServerHTTP {
 	image := router.Group("/image")
 	{
 		image.POST("/upload", middleware.ContributorAuth, imageHandler.UploadImage)
+		image.GET("/view", middleware.ContributorAuth, imageHandler.GetImage)
 	}
 
 	return &ServerHTTP{engine: router}

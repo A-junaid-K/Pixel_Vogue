@@ -75,16 +75,27 @@ func (ih *ImageHandler) UploadImage(c *gin.Context) {
 	c.JSON(200, resp)
 }
 
-// func (ih *ImageHandler) UploadImage(c *gin.Context, req *pb.UploadImageRequest) {
-// 	var body models.Image
+func (ih *ImageHandler) GetImage(c *gin.Context) {
+	contributor_id := c.GetInt("id")
 
-// 	body.Details.ContributorId = int(req.ContributorId)
+	image, err := ih.imageUsecase.GetImage(contributor_id)
+	if err != nil {
+		resp := response.ErrResponse{StatusCode: 400, Response: "Failed to get image", Error: err.Error()}
+		c.JSON(400, resp)
+	}
 
-// 	// Bind
-// 	if err := c.Bind(&body); err != nil {
-// 		resp := response.ErrResponse{StatusCode: 500, Response: "Cannot Bind", Error: err.Error()}
-// 		c.JSON(500, resp)
-// 		return
-// 	}
 
-// }
+	c.JSON(200, image)
+}
+
+func GetImageByParam(c *gin.Context) {
+
+}
+
+func UpdateImageDetails(c *gin.Context) {
+
+}
+
+func DeleteImage(c *gin.Context) {
+
+}
