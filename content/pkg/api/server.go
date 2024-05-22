@@ -14,7 +14,7 @@ type ServerHTTP struct {
 	engine *gin.Engine
 }
 
-func NewServerHTTP(imageHandler *imagehandler.ImageHandler) *ServerHTTP {
+func NewServerHTTP(imageHandler *imagehandler.ImageHandler, shopHandler *imagehandler.ShopHandler) *ServerHTTP {
 
 	router := gin.New()
 
@@ -25,6 +25,8 @@ func NewServerHTTP(imageHandler *imagehandler.ImageHandler) *ServerHTTP {
 	config.AllowHeaders = []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"}
 
 	router.Use(cors.Default())
+
+	router.GET("/home", shopHandler.Home)
 
 	image := router.Group("/image")
 	{

@@ -40,7 +40,7 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(cfg.AwsBucket),
-		Key:    aws.String("images/" + strconv.Itoa(imagedetails.ContributorId) + strconv.Itoa(imagedetails.ImageID) + "." + ext),
+		Key:    aws.String("images/" + strconv.Itoa(imagedetails.ContributorId) + "-" + strconv.Itoa(imagedetails.ImageID) + "." + ext),
 		// Key:  &head.Filename,
 		ACL:  aws.String("public-read"),
 		Body: image,
@@ -57,11 +57,11 @@ func (us *ImageUsecase) UploadImage(image multipart.File, head multipart.FileHea
 	return nil
 }
 
-func (us *ImageUsecase) GetImage(id int)(models.Image,error){
+func (us *ImageUsecase) GetImage(id int) (models.Image, error) {
 	var empty models.Image
-	image,err := us.GetImage(id)
+	image, err := us.GetImage(id)
 	if err != nil {
-		return empty,err
+		return empty, err
 	}
 	return image, nil
 }

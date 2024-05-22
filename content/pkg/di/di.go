@@ -20,11 +20,15 @@ func InitApi(cfg config.Config) (*api.ServerHTTP, error) {
 	imageUsecase := usecase.NewImageUsecase(imageRepository)
 	imageHandler := imagehandler.NewImageHandler(imageUsecase)
 
+	shopRepository := repository.NewShopRepository(gormDB)
+	shopUsecase := usecase.NewShopUsecase(shopRepository)
+	shopHandler := imagehandler.NewShopHandler(shopUsecase)
+
 	// contributorRepository := contributorRepo.NewContributorRepository(gormDB)
 	// contributorUsecase := contributorUseCase.NewContributorUseCase(contributorRepository)
 	// contributoreHandler := contributorhandler.NewContributorHanlder(contributorUsecase)
 
-	serverHTTP := api.NewServerHTTP(imageHandler)
+	serverHTTP := api.NewServerHTTP(imageHandler,shopHandler)
 
 	return serverHTTP, nil
 }
