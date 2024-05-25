@@ -25,3 +25,7 @@ func (sh *ShopHandler) Home(c *gin.Context) {
 
 	c.JSON(200, allimages)
 }
+
+func AddToCart(c *gin.Context){
+	
+}

@@ -15,9 +15,7 @@ type ImageHandler struct {
 }
 
 func NewImageHandler(imageUsecase interfaces.ImageUsecase) *ImageHandler {
-	return &ImageHandler{
-		imageUsecase: imageUsecase,
-	}
+	return &ImageHandler{imageUsecase: imageUsecase}
 }
 
 func (ih *ImageHandler) UploadImage(c *gin.Context) {

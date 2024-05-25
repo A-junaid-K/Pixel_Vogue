@@ -61,7 +61,7 @@ func (uh *ContributorHandler) VerifyOtp(c *gin.Context) {
 	var otp models.VerifyOtp
 	if err := c.Bind(&otp); err != nil {
 		resp := response.ErrResponse{
-			StatusCode: 400, Response: "bind error", Error: err.Error(),
+			StatusCode: 400, Response: "Bind error", Error: err.Error(),
 		}
 		c.JSON(http.StatusBadRequest, resp)
 	}

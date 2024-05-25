@@ -58,3 +58,10 @@ func (ir *ImageRepository) GetImage(id int) (models.Image, error) {
 
 	return image, nil
 }
+
+func (ir *ImageRepository) CheckImageExists(id int) bool {
+	var count int64
+	ir.DB.Table("images").Where("id=?", id).Count(&count)
+
+	return count > 0
+}
